@@ -147,5 +147,13 @@ curl http://<IP_PUBLICO>:8080/vagas
 
 ---
 
+## **Criadores**
+
+* [@gabrielCZz](https://github.com/orgs/kgb-fiap/people/gabrielCZz) - Gabriel Cruz | RM 559613
+* [@k-auaferreira](https://github.com/orgs/kgb-fiap/people/k-auaferreira) - Kauã Ferreira | RM 560992
+* [@Vi-debu](https://github.com/orgs/kgb-fiap/people/Vi-debu) - Vinicius Bitú | RM 560227
+
+---
+
 🔗 **Repositório GitHub:** [https://github.com/kgb-fiap/easypark-devops.git](https://github.com/kgb-fiap/easypark-devops.git)  
 🎥 **Vídeo de Demonstração:** [https://youtu.be/oMKW7f8RNwg](https://youtu.be/oMKW7f8RNwg)
