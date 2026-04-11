@@ -6,146 +6,188 @@
 
 O **EasyPark** é uma solução de **estacionamento inteligente com IoT**, desenvolvida para otimizar a ocupação de vagas e melhorar a experiência dos motoristas em estacionamentos.  
 O sistema realiza o monitoramento de vagas em tempo real através de **sensores IoT** e disponibiliza as informações por meio de uma **API Java Spring Boot** hospedada na **nuvem Azure**.
-
-O projeto foi implementado utilizando práticas modernas de **DevOps e Cloud Computing**, incluindo:
-- Provisionamento automatizado de infraestrutura com **Azure CLI**;  
-- Containerização da aplicação via **Docker**;  
-- Orquestração com **Docker Compose**;  
-- Deploy em **máquina virtual Linux** na Azure;  
-- Monitoramento de desempenho e alertas de CPU.
+Aqui está **tudo em um README.md único**, organizado, limpo e pronto pra copiar e colar direto no GitHub:
 
 ---
 
-## Estrutura do Diretório
+````markdown
+# 🚗 EasyPark - API de Vagas
+
+Projeto de API para controle de vagas usando Spring Boot, Oracle e Azure com CI/CD.
+
+---
+
+## 1. Baixar o projeto (EasyPark)
+
+- Acesse o repositório  
+- Baixe ou clone:
+
+```bash
+git clone https://github.com/Vi-debu/easypark-java.git
+````
+
+* Abra no IntelliJ ou VS Code
+
+---
+
+## 2. Configurar conexão com o banco
+
+Arquivo:
 
 ```
-DevOps/
-├── evidencias/                    # Evidências e screenshots do processo de deploy
-├── README.md                      # Documentação principal do projeto
-├── setup-azure.md                 # Comandos para criar e configurar a VM no Azure
-└── setup-docker.md                # Instalação do Docker e deploy da aplicação
+src/main/resources/application.properties
 ```
 
----
+Altere:
 
-## Arquitetura na Nuvem Azure
-
-A aplicação é executada em uma **Azure Virtual Machine** com os seguintes parâmetros:
-
-| Recurso | Valor |
-|----------|--------|
-| Resource Group | `EasyPark` |
-| Nome da VM | `VMEasyPark` |
-| Localização | `Canada Central` |
-| Tamanho | `Standard_B2s (2 vCPUs, 4GB RAM)` |
-| Sistema Operacional | Ubuntu 24.04 |
-| Porta Aplicação | 8080 |
-| Admin User | `admlnx` |
-
-**Monitoramento:**  
-Um alerta foi configurado para notificar quando o uso de CPU ultrapassar **90%** por **5 minutos consecutivos**, garantindo a estabilidade da aplicação.
+* URL do banco Oracle
+* Usuário
+* Senha
 
 ---
 
-## Docker e Containerização
+## 3. Subir o projeto no GitHub
 
-Os arquivos de containerização estão localizados no diretório da aplicação Java:
-
-- **Dockerfile** → `easypark/Dockerfile`
-- **Docker Compose** → `easypark/compose.yaml`
-
-### Estratégia de Build Multi-stage
-
-1. **Build Stage**  
-   - Base: `eclipse-temurin:21-jdk`  
-   - Compila a aplicação com Maven (`mvn clean package -DskipTests`)
-
-2. **Runtime Stage**  
-   - Base: `eclipse-temurin:21-jre`  
-   - Copia apenas o `.jar` final e executa com `java -jar app.jar`  
-   - Usuário não-root para maior segurança  
-
-### Docker Compose
-
-```yaml
-services:
-  easypark-api:
-    build:
-      context: .
-    env_file:
-      - .env
-    container_name: easypark-api
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
+```bash
+git add .
+git commit -m "subindo projeto"
+git push
 ```
 
 ---
 
-## Deploy Passo a Passo
+## 4. Criar o Web App na Azure
 
-### 1. Criar e Preparar a VM no Azure
+* Acesse o portal da Azure
+* Crie um **App Service (Web App)**
 
-```bash
-# Criação do grupo de recurso
-az group create --name "EasyPark" --location "canadacentral"
+Configure:
 
-# Criação da máquina virtual
-az vm create   --resource-group "EasyPark"   --name "VMEasyPark"   --image "Ubuntu2404"   --size "Standard_B2s"   --authentication-type "password"   --admin-username "admlnx"   --admin-password "Fiap@2tdspsvm"
+* Nome da aplicação
+* Região
+* Runtime Java
+
+---
+
+## 5. Conectar com GitHub (CI/CD)
+
+* Habilite implantação contínua
+* Autorize sua conta do GitHub
+* Selecione:
+
+  * Repositório: easypark-java
+  * Branch: main
+
+---
+
+## 6. Deixar o pipeline rodar
+
+* Vá no GitHub → **Actions**
+* Verifique:
+
+  * Build rodando
+  * Deploy rodando
+
+---
+
+## 7. Testar a API
+
+URL base:
+
+```
+https://api-easypark-agh6f3dugbemcfbh.canadacentral-01.azurewebsites.net
 ```
 
-### 2. Abrir Portas e Configurar Alerta
+Endpoint:
 
-```bash
-az vm open-port --resource-group "EasyPark" --name "VMEasyPark" --port 8080 --priority 1001
-
-az monitor metrics alert create   --name "Alert-CPU-High"   --resource-group "EasyPark"   --scopes $(az vm show -g EasyPark -n VMEasyPark --query id -o tsv)   --description "CPU acima de 90% por 5 minutos"   --condition "avg Percentage CPU > 90"
+```
+/vagas
 ```
 
-### 3. Conectar à VM
+Exemplo:
 
-```bash
-ssh admlnx@<IP_PUBLICO_DA_VM>
 ```
-
-### 4. Instalar Docker e Docker Compose
-
-```bash
-sudo apt-get update -y
-sudo apt-get install docker.io -y
-sudo apt-get install docker-compose -y
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -aG docker ${USER}
-exit
-```
-
-Após reconectar à VM:
-
-```bash
-docker ps
-docker-compose --version
-```
-
-### 5. Clonar o Repositório e Subir o Container
-
-```bash
-git clone https://github.com/kgb-fiap/easypark-java.git
-cd easypark
-
-echo -e "DB_USER=user\nDB_PASSWORD=pass" > .env
-docker-compose up -d
-```
-
-### 6. Testar a Aplicação
-
-```bash
-curl http://localhost:8080/vagas
-# ou via IP público
-curl http://<IP_PUBLICO>:8080/vagas
+https://api-easypark-agh6f3dugbemcfbh.canadacentral-01.azurewebsites.net/vagas
 ```
 
 ---
+
+## 8. Testar no Postman
+
+### GET → listar vagas
+
+```json
+{
+  "content": [
+    {
+      "id": 1823,
+      "codigo": "B20-3ANDAR",
+      "ativa": false,
+      "nivelId": 341,
+      "tipoVagaId": 122
+    },
+    {
+      "id": 1661,
+      "codigo": "V00-01",
+      "ativa": true,
+      "nivelId": 341,
+      "tipoVagaId": 122
+    }
+  ]
+}
+```
+
+---
+
+### POST → criar vaga
+
+```json
+{
+  "nivelId": 341,
+  "tipoVagaId": 122,
+  "codigo": "VAGA-TESTE-01",
+  "ativa": true
+}
+```
+
+---
+
+### PUT → atualizar vaga
+
+```json
+{
+  "nivelId": 341,
+  "tipoVagaId": 122,
+  "codigo": "VAGA-TESTE-01-EDITADA",
+  "ativa": false
+}
+```
+
+---
+
+### DELETE → apagar vaga
+
+* Troque o método para **DELETE**
+* Clique em **Send**
+
+---
+
+## 9. Conferir no banco
+
+```sql
+SELECT * FROM tb_vagas;
+```
+
+Verifique se os dados foram alterados.
+
+---
+
+## 10. Finalizar
+
+* Delete os recursos da Azure
+
+---
+
 
 ## **Criadores**
 
@@ -156,4 +198,4 @@ curl http://<IP_PUBLICO>:8080/vagas
 ---
 
 🔗 **Repositório GitHub:** [https://github.com/kgb-fiap/easypark-devops.git](https://github.com/kgb-fiap/easypark-devops.git)  
-🎥 **Vídeo de Demonstração:** [https://youtu.be/oMKW7f8RNwg](https://youtu.be/oMKW7f8RNwg)
+🎥 **Vídeo de Demonstração:** [(https://youtu.be/pxm7_kMZyfE](https://youtu.be/pxm7_kMZyfE)
