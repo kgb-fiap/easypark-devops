@@ -190,9 +190,9 @@ Verifique se os dados foram alterados.
 
 ## **Criadores**
 
-* [@gabrielCZz](https://github.com/orgs/kgb-fiap/people/gabrielCZz) - Gabriel Cruz | RM 559613
-* [@k-auaferreira](https://github.com/orgs/kgb-fiap/people/k-auaferreira) - Kauã Ferreira | RM 560992
-* [@Vi-debu](https://github.com/orgs/kgb-fiap/people/Vi-debu) - Vinicius Bitú | RM 560227
+* [@gabrielCZz](https://github.com/gabrielCZz) - Gabriel Cruz | RM 559613
+* [@k-auaferreira](https://github.com/k-auaferreira) - Kauã Ferreira | RM 560992
+* [@Vi-debu](https://github.com/Vi-debu) - Vinicius Bitú | RM 560227
 
 ---
 
