@@ -6,7 +6,6 @@
 
 O **EasyPark** é uma solução de **estacionamento inteligente com IoT**, desenvolvida para otimizar a ocupação de vagas e melhorar a experiência dos motoristas em estacionamentos.  
 O sistema realiza o monitoramento de vagas em tempo real através de **sensores IoT** e disponibiliza as informações por meio de uma **API Java Spring Boot** hospedada na **nuvem Azure**.
-Aqui está **tudo em um README.md único**, organizado, limpo e pronto pra copiar e colar direto no GitHub:
 
 ---
 
@@ -198,4 +197,4 @@ Verifique se os dados foram alterados.
 ---
 
 🔗 **Repositório GitHub:** [https://github.com/kgb-fiap/easypark-devops.git](https://github.com/kgb-fiap/easypark-devops.git)  
-🎥 **Vídeo de Demonstração:** [(https://youtu.be/pxm7_kMZyfE](https://youtu.be/pxm7_kMZyfE)
+🎥 **Vídeo de Demonstração:** [https://youtu.be/pxm7_kMZyfE](https://youtu.be/pxm7_kMZyfE)
